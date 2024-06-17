@@ -2,8 +2,9 @@ import numpy as np
 import torch.nn as nn
 import torch
 import torch.nn.functional as F
+from networks.mlp import MLP
 
-def learnedShape(grid):
+def learnedShape(grid, path = '/home/kensuke/latent-safety/logs/failure_set.pth'):
     assert grid.dims==3
 
     #for i in range()
@@ -13,7 +14,8 @@ def learnedShape(grid):
     X, Y, Z = np.meshgrid(x, y, z, indexing='ij')
     grid_points = np.column_stack((X.flatten(), Y.flatten(), Z.flatten()))
     model = MLP(3, 1, 256)
-    model.load_state_dict(torch.load('/home/kensuke/latent-safety/logs/failure_set.pth'))
+    print(path)
+    model.load_state_dict(torch.load(path))
     model.eval()  # Set the model to evaluation mode
     with torch.no_grad():  # Disable gradient calculation
         inputs = torch.tensor(grid_points, dtype=torch.float32)
