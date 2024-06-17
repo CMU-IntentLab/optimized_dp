@@ -1,4 +1,5 @@
 from odp.Shapes.ShapesFunctions import CylinderShape
+from odp.Shapes.ShapesFunctions import learnedShape
 from odp.Shapes.ShapesFunctions import ShapeRectangle
 from odp.Shapes.ShapesFunctions import Rect_Around_Point
 from odp.Shapes.ShapesFunctions import Lower_Half_Space

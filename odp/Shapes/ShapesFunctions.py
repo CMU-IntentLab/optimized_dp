@@ -1,4 +1,28 @@
 import numpy as np
+import torch.nn as nn
+import torch
+import torch.nn.functional as F
+
+def learnedShape(grid):
+    assert grid.dims==3
+
+    #for i in range()
+    x = np.array(grid.vs[0]).squeeze()
+    y = np.array(grid.vs[1]).squeeze()
+    z = np.array(grid.vs[2]).squeeze()/(2*np.pi)+0.5
+    X, Y, Z = np.meshgrid(x, y, z, indexing='ij')
+    grid_points = np.column_stack((X.flatten(), Y.flatten(), Z.flatten()))
+    model = MLP(3, 1, 256)
+    model.load_state_dict(torch.load('/home/kensuke/latent-safety/logs/failure_set.pth'))
+    model.eval()  # Set the model to evaluation mode
+    with torch.no_grad():  # Disable gradient calculation
+        inputs = torch.tensor(grid_points, dtype=torch.float32)
+        outputs = model(inputs)
+
+    # Reshape the outputs to match the shape of the grid
+    output_grid = outputs.reshape(X.shape).detach().numpy()
+
+    return output_grid
 
 def CylinderShape(grid, ignore_dims, center, radius):
     """Creates an axis align cylinder implicit surface function
